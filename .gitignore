@@ -8,6 +8,7 @@
 /server/pkg/linux_amd64/
 /server/bin/
 /serverdock/version
+/serverdock/node_modules
 /secret_mnemonic
 /.0x-artifacts/
 /coverage/
