@@ -21,6 +21,14 @@ module.exports = {
   		port: 8545,
       network_id: "*"
     },
+    standalone: {
+      verbose: process.env.VERBOSE,
+      host: "127.0.0.1",
+      port: 8545,
+      network_id: "*",
+      from: "0xc916cfe5c83dd4fc3c3b0bf2ec2d4e401782875e",
+      gasPrice: "500000000000",
+    },
     coverage: { //coverage/trace provider. note that it currently can't run extrnal-process relay.
 	     provider : require( './coverage-prov.js' ),
 	     verbose: process.env.VERBOSE,
