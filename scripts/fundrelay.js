@@ -8,44 +8,45 @@ const request = promisify(require("request"))
 const irelayhub = require( '../src/js/relayclient/IRelayHub')
 
 
-async function fundrelay(hubaddr, relayaddr, fromaddr, fund, stake, unstakeDelay, web3) {
+async function fundrelay(hubaddr, relayaddr, from, fund, stake, unstakeDelay, web3) {
     let rhub = new web3.eth.Contract(irelayhub, hubaddr)
     let curstake = (await rhub.methods.getRelay(relayaddr).call()).totalStake;
 
     if ( curstake > 1e18 ) {
         console.log( "already has a stake of "+(curstake/1e18)+" eth. NOT adding more")
     } else {
-        console.log( "staking ",stake)
-        console.log( await rhub.methods.stake(relayaddr, unstakeDelay).send({value: stake, from:fromaddr, gas:8000000}))
+        console.log( "staking ", stake)
+        console.log( await rhub.methods.stake(relayaddr, unstakeDelay).send({value: stake, from:from, gas:8000000}))
     }
 
     let balance = await web3.eth.getBalance(relayaddr)
     if ( balance > 1e17 ) {
         console.log( "already has a balance of "+(stake/1e18)+" eth. NOT adding more")
     } else {
-        ret = await new Promise((resolve,reject)=> {
-            web3.eth.sendTransaction({from: fromaddr, to: relayaddr,value:fund, gas: 1e6}, (e, r) => {
+      console.log( "funding", fund)
+        const res = await new Promise((resolve,reject)=> {
+            web3.eth.sendTransaction({from: from, to: relayaddr,value:fund, gas: 1e6}, (e, r) => {
                 if (e) reject(e)
                 else resolve(r)
             })
         })
-        console.log(ret)
+        console.log(res)
     }
-
 }
 
 async function run() {
     let hubaddr = process.argv[2]
     let relay = process.argv[3]
+    let from = process.argv[4]
     let ethNodeUrl = process.argv[5] || 'http://localhost:8545'
+    let fund = process.argv[6] || "1000"
+    let stake = process.argv[7] || "1000"
 
-    console.log({relay, hubaddr, ethNodeUrl})
+    console.log({relay, hubaddr, ethNodeUrl, from, fund, stake})
     if (relay.indexOf("http") == 0) {
-        res = await request(relay+"/getaddr")
+        const res = await request(relay+"/getaddr")
         relay = JSON.parse(res.body).RelayServerAddress
     }
-
-    let fromaccount = process.argv[4] || 0
 
     if (!relay) {
         console.log("usage: fundrelay.js {hubaddr} {relayaddr/url} {from-account}")
@@ -55,8 +56,7 @@ async function run() {
 
     const web3 = new Web3(new Web3.providers.HttpProvider(ethNodeUrl))
 
-    let accounts = await web3.eth.getAccounts()
-    fundrelay(hubaddr, relay, accounts[fromaccount], 1.1e18, 1.1e18, 3600 * 24 * 7, web3)
+    fundrelay(hubaddr, relay, from, web3.utils.toWei(fund.toString(), "ether"), web3.utils.toWei(stake.toString(), "ether"), 3600 * 24 * 7, web3)
 
 }
 
