@@ -46,13 +46,11 @@ async function run() {
     relay = JSON.parse(res.body).RelayServerAddress
   }
 
-  const fromaccount = process.argv[4] || 0
-
-  if (!relay) {
-    console.log('usage: fundrelay.js {hubaddr} {relayaddr/url} {from-account}')
-    console.log('stake amount is fixed on 1 eth, delay 30 seconds')
-    process.exit(1)
-  }
+    if (!relay) {
+        console.log("usage: fundrelay.js {hubaddr} {relayaddr/url} {from-account}")
+        console.log("stake amount is fixed on 1 eth, delay 30 seconds")
+        process.exit(1)
+    }
 
   const web3 = new Web3(new Web3.providers.HttpProvider(ethNodeUrl))
 

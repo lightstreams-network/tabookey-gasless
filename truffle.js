@@ -25,17 +25,19 @@ module.exports = {
       verbose: process.env.VERBOSE,
       host: "127.0.0.1",
       port: 8545,
-      network_id: "*",
+      network_id: "161",
       from: "0xc916cfe5c83dd4fc3c3b0bf2ec2d4e401782875e",
       gasPrice: "500000000000",
+      gasLimit: "0x6691b7"
     },
     sirius: {
       verbose: process.env.VERBOSE,
       host: "127.0.0.1",
       port: 8545,
-      network_id: "*",
+      network_id: "162",
       from: "0xd119b8b038d3a67d34ca1d46e1898881626a082b",
       gasPrice: "500000000000",
+      gasLimit: "0x6691b7"
     },
     coverage: { //coverage/trace provider. note that it currently can't run extrnal-process relay.
 	     provider : require( './coverage-prov.js' ),

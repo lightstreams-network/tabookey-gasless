@@ -264,6 +264,10 @@ func refreshBlockchainView() {
 		sleep(10*time.Second, devMode)
 
 	}
+
+	gasPrice := relay.GasPrice()
+	log.Println("GasPrice:", gasPrice.Uint64())
+
 	if !ready {
 		log.Println("Relay ready for client requests.")
 	}
@@ -324,7 +328,7 @@ func keepAlive() {
 		return
 	}
 	log.Println("Registering relay...")
-	
+
 	err = relay.RegisterRelay()
 	if err == nil {
 		log.Println("Done registering")
