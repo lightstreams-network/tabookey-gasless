@@ -7,14 +7,14 @@ gobin=$root/build/server/bin/
 function init_relay() {
     echo "Configurable networks: 'standalone','sirius','mainnet'"
 
-    if [ "$1" != "standalone" ] && [ "$1" != "sirius" ] && [ "$1" != "mainnet" ]; then
-	echo "Invalid network: $1"
+    if [ "${NETWORK}" != "standalone" ] && [ "${NETWORK}" != "sirius" ] && [ "${NETWORK}" != "mainnet" ]; then
+	echo "Invalid network: ${NETWORK}"
 	exit 1
     else
-	echo "Using network: $1"
+	echo "Using network: ${NETWORK}"
     fi
 
-    network=$1
+    network=${NETWORK}
 
     cd $root
 
@@ -41,14 +41,14 @@ function init_relay() {
 
 function run_relay() {
     hubaddr=$(cat ${root}/hubaddr.txt)
-    $gobin/RelayHttpServer -DefaultGasPrice 500000000000 -GasPricePercent 0 -RelayHubAddress $hubaddr -RegistrationBlockRate 100 -Workdir $root/build/server
+    $gobin/RelayHttpServer -DefaultGasPrice ${GAS_PRICE} -GasPricePercent ${GAS_PRICE_PERCENT} -RelayHubAddress $hubaddr -RegistrationBlockRate ${REGISTRATION_BLOCK_RATE} -Workdir $root/build/server -EthereumNodeUrl ${ETHEREUM_NODE_URL}
 }
 
 function main() {
     if [ ! -f $root/hubaddr.txt ]; then
-	init_relay $@
+	init_relay
     fi
     run_relay
 }
 
-main $@
+main
