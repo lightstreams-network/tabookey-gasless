@@ -21,29 +21,13 @@ dir=`dirname $0`
 root=`cd $dir;pwd`
 
 cd $root
-#todo: should compile the server elsewhere.
+
 gobin=$root/build/server/bin/
 export GOPATH=$root/server/:$root/build/server
 echo "Using GOPATH=" $GOPATH
-# cd $gobin
+
 ./scripts/extract_abi.js
 make -C server
-#todo: run if changed..
 blocktime=${T=0}
-
-pkill -f RelayHttpServer && echo kill old relayserver
-
-hubaddr=`npx truffle migrate --network=$network --reset | tee /dev/stderr | grep -A 4 "RelayHub" | grep "contract address" | grep "0x.*" -o`
-
-if [ -z "$hubaddr" ]; then
-echo "FATAL: failed to detect RelayHub address"
-exit 1
-fi
-
-echo $hubaddr
-
-#fund relay:
-relayurl=http://localhost:8090
-( sleep 1 ; ./scripts/fundrelay.js $hubaddr $relayurl 0 ) &
 
 $gobin/RelayHttpServer -DefaultGasPrice 500000000000 -GasPricePercent 0 -RelayHubAddress $hubaddr -RegistrationBlockRate 100 -Workdir $root/build/server
