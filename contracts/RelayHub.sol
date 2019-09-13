@@ -27,7 +27,7 @@ contract RelayHub is IRelayHub {
     uint256 constant private minimumRelayBalance = 0.1 ether;
 
     // Maximum funds that can be deposited at once. Prevents user error by disallowing large deposits.
-    uint256 constant private maximumRecipientDeposit = 2 ether;
+    uint256 constant private maximumRecipientDeposit = 100 ether;
 
     /**
     * the total gas overhead of relayCall(), before the first gasleft() and after the last gasleft().

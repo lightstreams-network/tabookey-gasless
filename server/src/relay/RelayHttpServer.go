@@ -135,7 +135,7 @@ func getEthAddrHandler(w http.ResponseWriter, _ *http.Request) {
 
 func relayHandler(w http.ResponseWriter, r *http.Request) {
 
-	log.Println("Handling relay request...")
+	fmt.Println("Handling relay request...")
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusOK)
 		return
@@ -143,7 +143,7 @@ func relayHandler(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 
 	if err != nil {
-		log.Println("Could not read request body", body, err)
+		fmt.Println("Could not read request body", body, err)
 		w.Write([]byte("{\"error\":\"" + err.Error() + "\"}"))
 		return
 	}
@@ -156,14 +156,14 @@ func relayHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	signedTx, err := relay.CreateRelayTransaction(*request)
 	if err != nil {
-		log.Println("Failed to relay")
+		fmt.Println("Failed to relay")
 		w.Write([]byte("{\"error\":\"" + err.Error() + "\"}"))
 
 		return
 	}
 	resp, err := signedTx.MarshalJSON()
 	if err != nil {
-		log.Println(err)
+		fmt.Println(err)
 		w.Write([]byte("{\"error\":\"" + err.Error() + "\"}"))
 		return
 	}
@@ -178,10 +178,10 @@ func parseCommandLine() (relayParams librelay.RelayParams) {
 	relayHubAddress := flag.String("RelayHubAddress", "0x537F27a04470242ff6b2c3ad247A05248d0d27CE", "RelayHub address")
 	defaultGasPrice := flag.Int64("DefaultGasPrice", int64(params.GWei), "Relay's default gasPrice per (non-relayed) transaction in wei")
 	gasPricePercent := flag.Int64("GasPricePercent", 10, "Relay's gas price increase as percentage from current average. GasPrice = (100+GasPricePercent)/100 * eth_gasPrice() ")
-	RegistrationBlockRate = *flag.Uint64("RegistrationBlockRate", 6000-200, "Relay registeration rate (in blocks)")
 	ethereumNodeUrl := flag.String("EthereumNodeUrl", "http://localhost:8545", "The relay's ethereum node")
 	workdir := flag.String("Workdir", filepath.Join(os.Getenv("PWD"), "data"), "The relay server's workdir")
 	flag.BoolVar(&devMode, "DevMode", false, "Enable developer mode (do not retry unconfirmed txs, do not cache account nonce, do not wait after calls to the chain, faster polling)")
+	flag.Uint64Var(&RegistrationBlockRate, "RegistrationBlockRate", 6000-200, "Relay registeration rate (in blocks)")
 
 	flag.Parse()
 
@@ -209,7 +209,8 @@ func parseCommandLine() (relayParams librelay.RelayParams) {
 	KeystoreDir = filepath.Join(*workdir, "keystore")
 
 	log.Println("Using RelayHub address: " + relayParams.RelayHubAddress.String())
-	log.Println("Using workdir: " + *workdir)
+	log.Println("Using WorkDir: " + *workdir)
+	log.Println(fmt.Sprintf("Using RegistrationBlockRate: %v", RegistrationBlockRate))
 	if devMode {
 		log.Println("Using dev mode")
 	}

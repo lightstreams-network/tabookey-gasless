@@ -325,6 +325,7 @@ func (relay *RelayServer) IsUnstaked() (removed bool, err error) {
 }
 
 func (relay *RelayServer) BlockCountSinceRegistration() (count uint64, err error) {
+	log.Println("Checking block count since registration...")
 	lastBlockHeader, err := relay.Client.HeaderByNumber(context.Background(), nil)
 	if err != nil {
 		log.Println(err)
@@ -339,6 +340,7 @@ func (relay *RelayServer) BlockCountSinceRegistration() (count uint64, err error
 		Start: startBlock,
 		End:   &lastBlockNumber,
 	}
+	log.Println(fmt.Sprintf("LastBlockHeader: %v, Start: %v", lastBlockNumber, startBlock))
 	iter, err := relay.rhub.FilterRelayAdded(filterOpts, []common.Address{relay.Address()}, nil)
 	if err != nil {
 		log.Println(err)
@@ -354,6 +356,7 @@ func (relay *RelayServer) BlockCountSinceRegistration() (count uint64, err error
 		return 0, fmt.Errorf("Could not receive RelayAdded events for our relay")
 	}
 	count = lastBlockNumber - iter.Event.Raw.BlockNumber
+	log.Println(fmt.Sprintf("Count: %v", count));
 	return
 }
 
