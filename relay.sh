@@ -35,7 +35,7 @@ function init_relay() {
     echo $hubaddr > ./hubaddr.txt
 
     relayurl=http://localhost:8090
-    ( sleep 1 ; ./scripts/fundrelay.js $hubaddr $relayurl 0 )
+    ( sleep 3; ./scripts/fundrelay.js $hubaddr $relayurl 0 ) &
 }
 
 function run_relay() {
