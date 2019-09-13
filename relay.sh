@@ -22,7 +22,6 @@ function init_relay() {
     echo "Using GOPATH=$GOPATH"
 
     ./scripts/extract_abi.js
-    make -C server
 
     blocktime=${T=0}
 
