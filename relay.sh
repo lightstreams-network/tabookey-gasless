@@ -9,6 +9,7 @@ function init_relay() {
 
     if [ "$1" != "standalone" ] && [ "$1" != "sirius" ] && [ "$1" != "mainnet" ]; then
 	echo "Invalid network: $1"
+	exit 1
     else
 	echo "Using network: $1"
     fi
@@ -18,7 +19,7 @@ function init_relay() {
     cd $root
 
     export GOPATH=$root/server/:$root/build/server
-    echo "Using GOPATH=" $GOPATH
+    echo "Using GOPATH=$GOPATH"
 
     ./scripts/extract_abi.js
     make -C server
@@ -45,9 +46,9 @@ function run_relay() {
 
 function main() {
     if [ ! -f $root/hubaddr.txt ]; then
-	init_relay
+	init_relay $@
     fi
     run_relay
 }
 
-main
+main $@
