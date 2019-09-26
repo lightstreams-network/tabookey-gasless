@@ -325,7 +325,6 @@ func (relay *RelayServer) IsUnstaked() (removed bool, err error) {
 }
 
 func (relay *RelayServer) BlockCountSinceRegistration() (count uint64, err error) {
-	log.Println("Checking block count since registration...")
 	lastBlockHeader, err := relay.Client.HeaderByNumber(context.Background(), nil)
 	if err != nil {
 		log.Println(err)

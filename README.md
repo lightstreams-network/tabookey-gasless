@@ -1,6 +1,11 @@
 # Tabookey Relay Network
 
-USE LATEST TAG: **v0.4.0-beta2**
+## Usage
+```
+npm i
+make build-server
+source .env && sh relay.sh
+```
 
 ## What is it?
 
