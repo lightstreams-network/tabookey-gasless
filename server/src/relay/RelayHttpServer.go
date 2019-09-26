@@ -26,6 +26,7 @@ var devMode bool                                                  // Whether we 
 
 var ready = false
 var removed = false
+var printedGasPrice = false
 
 var relay librelay.IRelay
 var server *http.Server
@@ -49,7 +50,7 @@ func main() {
 	http.HandleFunc("/relay", assureRelayReady(relayHandler))
 	http.HandleFunc("/getaddr", getEthAddrHandler)
 
-	timeUnit = time.Minute
+	timeUnit = 3*time.Second
 	if devMode {
 		timeUnit = time.Second
 	}
@@ -253,7 +254,7 @@ func refreshBlockchainView() {
 			log.Println(err)
 		}
 		ready = false
-		sleep(15*time.Second, devMode)
+		sleep(2*time.Second, devMode)
 	}
 
 	for err := relay.RefreshGasPrice(); err != nil; err = relay.RefreshGasPrice() {
@@ -261,12 +262,15 @@ func refreshBlockchainView() {
 			log.Println(err)
 		}
 		ready = false
-		sleep(10*time.Second, devMode)
+		sleep(2*time.Second, devMode)
 
 	}
 
 	gasPrice := relay.GasPrice()
-	log.Println("GasPrice:", gasPrice.Uint64())
+	if !printedGasPrice {
+		log.Println("GasPrice:", gasPrice.Uint64())
+		printedGasPrice = true
+	}
 
 	if !ready {
 		log.Println("Relay ready for client requests.")
