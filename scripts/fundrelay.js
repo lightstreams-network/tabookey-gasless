@@ -56,7 +56,7 @@ async function run() {
   const web3 = new Web3(new Web3.providers.HttpProvider(ethNodeUrl))
 
   let accounts = await web3.eth.getAccounts()
-  fundrelay(hubaddr, relay, accounts[fromaccount], 1.1e18, 1.1e18, 3600 * 24 * 7, web3)
+  fundrelay(hubaddr, relay, accounts[fromaccount], 10.1e18, 10.1e18, 3600 * 24 * 7, web3)
 
 }
 
