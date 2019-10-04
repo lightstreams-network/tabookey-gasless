@@ -1,5 +1,18 @@
 # Gas Stations Network
 
+## Init new RelayHub
+
+To reset the relayHub you have to remove the generated file `hubaddr.txt` at the root path,
+```
+$> rm hubaddr.txt
+$> rm -rf ./build
+$> source .env && ./relay.sh
+$> geth attach localhost:8545
+$(geth)> personal.unlockAccount("0xc916cfe5c83dd4fc3c3b0bf2ec2d4e401782875e", "WelcomeToSirius");
+$(geth)> eth.sendTransaction({from:"0xc916cfe5c83dd4fc3c3b0bf2ec2d4e401782875e", to:"${RELAY_HUB_ADDR}", value: web3.toWei(100, "ether")});
+```
+
+
 ## What is it?
 
 It's a mechanism for dApps to work with gas-less clients.
