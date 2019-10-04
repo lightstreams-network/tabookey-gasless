@@ -8,10 +8,10 @@ function init_relay() {
     echo "Configurable networks: 'standalone','sirius','mainnet'"
 
     if [ "${NETWORK}" != "standalone" ] && [ "${NETWORK}" != "sirius" ] && [ "${NETWORK}" != "mainnet" ]; then
-	echo "Invalid network: ${NETWORK}"
-	exit 1
+		echo "Invalid network: ${NETWORK}"
+		exit 1
     else
-	echo "Using network: ${NETWORK}"
+		echo "Using network: ${NETWORK}"
     fi
 
     network=${NETWORK}

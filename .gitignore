@@ -19,3 +19,4 @@ tabookey-gasless-*.tgz
 /artifacts/
 /webtools/tabookey-webtools.pack.js
 /singleton/
+hubaddr.txt
