@@ -19,7 +19,8 @@ function init_relay() {
     cd $root
 
     export GOPATH=$root/server/:$root/build/server
-    echo "Using GOPATH=$GOPATH"
+    echo "GOPATH: $GOPATH"
+    echo "RELAY_URL: ${RELAY_URL}"
 
     ./scripts/extract_abi.js
 
@@ -34,8 +35,7 @@ function init_relay() {
 
     echo $hubaddr > ./hubaddr.txt
 
-    relayurl=http://localhost:8090
-    ( sleep 3; ./scripts/fundrelay.js $hubaddr $relayurl 0 ) &
+    ( sleep 3; ./scripts/fundrelay.js $hubaddr ${RELAY_URL} 0 ) &
 }
 
 function run_relay() {
