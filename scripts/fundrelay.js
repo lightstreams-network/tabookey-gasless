@@ -41,9 +41,13 @@ async function run() {
 
   console.log({relay, hubaddr, ethNodeUrl})
   if (relay.indexOf("http") == 0) {
-    res = await request(relay+"/getaddr")
+    const requestUrl = relay+"/getaddr";
+    console.log(`Querying RelayServerAddress from URL: ${requestUrl}`);
+    res = await request(requestUrl)
     relay = JSON.parse(res.body).RelayServerAddress
   }
+
+  console.log(`RelayServerAddress: ${relay}`);
 
   let fromaccount = process.argv[4] || 0
 
