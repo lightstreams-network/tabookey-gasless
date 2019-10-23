@@ -30,6 +30,7 @@ async function fundrelay (hubaddr, relayaddr, fromaddr, fund, stake, unstakeDela
     })
     console.log(ret)
   }
+
 }
 
 async function run() {
@@ -57,7 +58,14 @@ async function run() {
   const web3 = new Web3(new Web3.providers.HttpProvider(ethNodeUrl))
 
   const accounts = await web3.eth.getAccounts()
-  fundrelay(hubaddr, relay, from, web3.utils.toWei(fund.toString(), "ether"), web3.utils.toWei(stake.toString(), "ether"), 3600 * 24 * 7, web3)
+
+  try {
+    fundrelay(hubaddr, relay, from, web3.utils.toWei(fund.toString(), "ether"), web3.utils.toWei(stake.toString(), "ether"), 3600 * 24 * 7, web3)
+  } catch (e) {
+    console.log(e);
+    process.exit(1);
+  }
+
 }
 
 run()
