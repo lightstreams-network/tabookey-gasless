@@ -9,14 +9,16 @@ const irelayhub = require( '../src/js/relayclient/IRelayHub')
 
 
 async function fundrelay(hubaddr, relayaddr, fromaddr, fund, stake, unstakeDelay, web3) {
-  let rhub = new web3.eth.Contract(irelayhub, hubaddr)
+  let rhub = new web3.eth.Contract(irelayhub, hubaddr);
   let curstake = (await rhub.methods.getRelay(relayaddr).call()).totalStake;
+
+  console.log(`RelayAddr ${relayaddr} current stake is ${curstake.toString()}`);
 
   if ( curstake > 1e18 ) {
     console.log( "already has a stake of "+(curstake/1e18)+" eth. NOT adding more")
   } else {
     console.log( "staking ",stake)
-    console.log( await rhub.methods.stake(relayaddr, unstakeDelay).send({value: stake, from:fromaddr, gas:8000000}))
+    console.log( await rhub.methods.stake(relayaddr, unstakeDelay).send({value: stake, from:fromaddr, gas: 8000000}))
   }
 
   let balance = await web3.eth.getBalance(relayaddr)
@@ -60,7 +62,13 @@ async function run() {
   const web3 = new Web3(new Web3.providers.HttpProvider(ethNodeUrl))
 
   let accounts = await web3.eth.getAccounts()
-  fundrelay(hubaddr, relay, accounts[fromaccount], 10.1e18, 10.1e18, 3600 * 24 * 7, web3)
+
+  try {
+    fundrelay(hubaddr, relay, accounts[fromaccount], 10.1e18, 10.1e18, 3600 * 24 * 7, web3)
+  } catch (e) {
+    console.log(e);
+    process.exit(1);
+  }
 
 }
 

@@ -40,7 +40,7 @@ function init_relay() {
 
 function run_relay() {
     hubaddr=$(cat ${root}/hubaddr.txt)
-    $gobin/RelayHttpServer -DefaultGasPrice ${GAS_PRICE} -GasPricePercent ${GAS_PRICE_PERCENT} -RelayHubAddress $hubaddr -RegistrationBlockRate ${REGISTRATION_BLOCK_RATE} -Workdir $root/build/server -EthereumNodeUrl ${ETHEREUM_NODE_URL} -Url http://localhost:8090
+    $gobin/RelayHttpServer -DefaultGasPrice ${GAS_PRICE} -GasPricePercent ${GAS_PRICE_PERCENT} -RelayHubAddress $hubaddr -RegistrationBlockRate ${REGISTRATION_BLOCK_RATE} -Workdir $root/build/server -EthereumNodeUrl ${ETHEREUM_NODE_URL} -Url ${RELAY_URL}
 }
 
 function main() {
