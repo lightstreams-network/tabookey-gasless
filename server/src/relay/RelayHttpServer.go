@@ -266,12 +266,6 @@ func refreshBlockchainView() {
 
 	}
 
-	gasPrice := relay.GasPrice()
-	if !printedGasPrice {
-		log.Println("GasPrice:", gasPrice.Uint64())
-		printedGasPrice = true
-	}
-
 	if !ready {
 		log.Println("Relay ready for client requests.")
 	}

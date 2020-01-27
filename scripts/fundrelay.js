@@ -36,7 +36,7 @@ async function fundrelay (hubaddr, relayaddr, fromaddr, fund, stake, unstakeDela
 async function run() {
     let hubaddr = process.argv[2]
     let relay = process.argv[3]
-    let from = process.argv[4]
+    let fromaccount = process.argv[4] || 0
     let ethNodeUrl = process.argv[5] || 'http://localhost:8545'
     let fund = process.argv[6] || "1000"
     let stake = process.argv[7] || "1000"
@@ -60,7 +60,7 @@ async function run() {
   const accounts = await web3.eth.getAccounts()
 
   try {
-    fundrelay(hubaddr, relay, from, web3.utils.toWei(fund.toString(), "ether"), web3.utils.toWei(stake.toString(), "ether"), 3600 * 24 * 7, web3)
+    fundrelay(hubaddr, relay, accounts[fromaccount], web3.utils.toWei(fund.toString(), "ether"), web3.utils.toWei(stake.toString(), "ether"), 3600 * 24 * 7, web3)
   } catch (e) {
     console.log(e);
     process.exit(1);

@@ -276,6 +276,10 @@ func (relay *RelayServer) RegisterRelay() (err error) {
 func (relay *RelayServer) sendRegisterTransaction() (tx *types.Transaction, err error) {
 	desc := fmt.Sprintf("RegisterRelay(address=%s, url=%s)", relay.RelayHubAddress.Hex(), relay.Url)
 	tx, err = relay.sendDataTransaction(desc, func(auth *bind.TransactOpts) (*types.Transaction, error) {
+		// Specify GasLimit otherwise the registration fails:
+		// 2020/01/27 10:41:20 relay_server.go:664: RegisterRelay(address=0x0d8c036Cca2ebaF996C7C0Ad785c9A0Ccf264A0D, url=http://localhost:8090) error sending tx: failed to estimate gas needed: gas required exceeds allowance (99902345) or always failing transaction
+		auth.GasLimit = 10000000
+
 		return relay.rhub.RegisterRelay(auth, relay.Fee, relay.Url)
 	})
 	return
@@ -752,8 +756,8 @@ func (relay *RelayServer) pollNonce() (nonce uint64, err error) {
 	return
 }
 
-const confirmationsNeeded = 12
-const pendingTransactionTimeout = 5 * 60 // 5 minutes
+const confirmationsNeeded = 1
+const pendingTransactionTimeout = 2 * 60 // 5 minutes
 
 func (relay *RelayServer) UpdateUnconfirmedTransactions() (newTx *types.Transaction, err error) {
 	if relay.DevMode {
