@@ -54,7 +54,7 @@ func main() {
 	if devMode {
 		timeUnit = time.Second
 	}
-	stopKeepAlive = schedule(keepAlive, 10*timeUnit, 0)
+	stopKeepAlive = schedule(keepAlive, 1*timeUnit, 0)
 	stopRefreshBlockchainView = schedule(refreshBlockchainView, 1*timeUnit, 0)
 	stopUpdatingPendingTxs = schedule(updatePendingTxs, 1*timeUnit, 0)
 	stopListeningToRelayRemoved = schedule(stopServingOnRelayRemoved, 1*timeUnit, 0)
@@ -347,7 +347,6 @@ func stopServingOnRelayRemoved() {
 		schedule(shutdownOnRelayUnstaked, 1*timeUnit, 0)
 		stopListeningToRelayRemoved <- true
 	}
-
 }
 
 func shutdownOnRelayUnstaked() {
