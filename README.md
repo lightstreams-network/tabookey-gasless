@@ -6,6 +6,7 @@ To reset the relayHub you have to remove the generated file `hubaddr.txt` at the
 ```
 $> rm hubaddr.txt
 $> rm -rf ./build
+$> make build-server
 $> source .env && ./relay.sh
 $> geth attach localhost:8545
 $(geth)> personal.unlockAccount("0xc916cfe5c83dd4fc3c3b0bf2ec2d4e401782875e", "WelcomeToSirius");
