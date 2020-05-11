@@ -8,7 +8,7 @@ $> rm hubaddr.txt
 $> rm -rf ./build
 $> make build-server
 $> source .env && ./relay.sh
-$> geth attach localhost:8545
+$> geth attach http://localhost:8545
 $(geth)> personal.unlockAccount("0xc916cfe5c83dd4fc3c3b0bf2ec2d4e401782875e", "WelcomeToSirius");
 $(geth)> eth.sendTransaction({from:"0xc916cfe5c83dd4fc3c3b0bf2ec2d4e401782875e", to:"${RELAY_HUB_ADDR}", value: web3.toWei(100, "ether")});
 ```
